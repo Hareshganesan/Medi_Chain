@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediChain — Operations</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='7' fill='%236366f1'/><path d='M12 6v12M6 12h12' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body class="theme-dark">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo"><i data-icon="logo" data-size="18"></i></div><div>MediChain<small>Operations</small></div></div>
+      <a class="nav-item active" href="#cluster"><i data-icon="server"></i> Cluster</a>
+      <a class="nav-item" href="#chaos"><i data-icon="zap"></i> Chaos lab</a>
+      <a class="nav-item" href="#ring"><i data-icon="target"></i> Hash ring</a>
+      <a class="nav-item" href="#resilience"><i data-icon="shield"></i> Resilience</a>
+      <a class="nav-item" href="#events"><i data-icon="radio"></i> Event stream</a>
+      <a class="nav-item" href="#ledger"><i data-icon="link"></i> Audit ledger</a>
+      <div class="nav-label">Policy</div>
+      <div class="nav-note">Operators run the platform but are denied clinical data — least privilege.</div>
+      <div class="user-card" id="user-card"></div>
+      <button class="nav-item" id="logout"><i data-icon="logout"></i> Sign out</button>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1>Operations</h1>
+        <span class="live" id="live"><span class="dot pulse"></span> Live</span>
+        <span class="spacer"></span>
+        <a class="btn sm" href="/metrics" target="_blank" rel="noopener"><i data-icon="activity" data-size="14"></i> Prometheus</a>
+      </div>
+
+      <div class="kpis">
+        <div class="card kpi"><div class="l">Throughput</div><div class="v" id="k-rps">—</div><div class="s">requests / s</div><div id="k-rps-spark" style="color:var(--primary)"></div></div>
+        <div class="card kpi"><div class="l">Latency p50 · p95 · p99</div><div class="v" id="k-lat">—</div><div class="s" id="k-lat-s">ms at the gateway</div></div>
+        <div class="card kpi"><div class="l">Cache hit ratio</div><div class="v" id="k-cache">—</div><div class="s" id="k-cache-s">cache-aside</div></div>
+        <div class="card kpi"><div class="l">Events published</div><div class="v" id="k-events">—</div><div class="s" id="k-events-s">outbox to event bus</div></div>
+        <div class="card kpi"><div class="l">Audit ledger</div><div class="v" id="k-ledger">—</div><div class="s" id="k-ledger-s">SHA-256 hash chain</div></div>
+      </div>
+
+      <div class="ops-grid">
+        <section class="span-2" id="cluster">
+          <div class="ops-grid" id="shards"></div>
+        </section>
+
+        <section class="card span-2" id="chaos">
+          <div class="card-head">
+            <h3><i data-icon="zap"></i> Chaos lab</h3>
+            <span class="sub">continuous writes through Raft while you kill or partition nodes</span>
+            <span class="spacer"></span>
+            <button class="btn sm primary" id="chaos-toggle">Start write traffic</button>
+          </div>
+          <div class="grid-2" id="chaos-shards" style="padding:6px 0 18px"></div>
+        </section>
+
+        <section class="card" id="ring">
+          <div class="card-head"><h3><i data-icon="target"></i> Consistent hashing</h3><span class="spacer"></span><span class="sub">150 virtual nodes per shard</span></div>
+          <div class="row" style="padding:6px 22px 0;align-items:flex-start">
+            <div id="ring-svg" style="width:220px;flex-shrink:0"></div>
+            <div class="stack" style="flex:1;min-width:0">
+              <div id="ring-legend" class="stack" style="gap:8px"></div>
+              <div class="field"><label for="ring-key">Where does a key live?</label>
+                <div class="row"><input class="input" id="ring-key" placeholder="P-1A2B3C" /><button class="btn sm" id="ring-go">Locate</button></div></div>
+              <div id="ring-result" class="muted" style="font-size:12.5px"></div>
+            </div>
+          </div>
+          <p class="muted" style="font-size:12px;padding:6px 22px 18px;margin:0">Adding a shard moves only ~1/N of patients. All of one patient's keys share a shard.</p>
+        </section>
+
+        <section class="card" id="resilience">
+          <div class="card-head"><h3><i data-icon="shield"></i> Circuit breakers</h3><span class="spacer"></span><span class="sub">per replica, at the gateway</span></div>
+          <div id="breakers"></div>
+          <div class="card-head"><h3><i data-icon="radio"></i> Event bus</h3><span class="spacer"></span><span class="sub">topics · consumer lag</span></div>
+          <div id="bus" style="padding-bottom:10px"></div>
+        </section>
+
+        <section class="card" id="events">
+          <div class="card-head"><h3><i data-icon="activity"></i> Live events</h3><span class="spacer"></span><span class="sub">SSE · notification service</span></div>
+          <div class="feed" id="feed"><div class="empty">Waiting for events…</div></div>
+        </section>
+
+        <section class="card" id="ledger">
+          <div class="card-head">
+            <h3><i data-icon="link"></i> Audit ledger</h3><span class="spacer"></span>
+            <button class="btn sm" id="verify">Verify chain</button>
+            <button class="btn sm danger" id="tamper" title="Demo: simulate an insider editing history">Tamper</button>
+            <button class="btn sm" id="restore">Restore</button>
+          </div>
+          <div id="verify-result" style="padding:0 22px"></div>
+          <div class="chain" id="chain"></div>
+          <div class="feed" id="ledger-table" style="max-height:300px"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+node_modules/
+data/
+.e2e-data/
+reports/
+test-results/
+playwright-report/
+.stryker-tmp/
