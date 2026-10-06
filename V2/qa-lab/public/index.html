@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediChain QA Lab</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='7' fill='%238b5cf6'/><path d='M7 12l3.5 3.5L17 9' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/lab.css" />
+</head>
+<body class="theme-dark">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo lab-logo"><i data-icon="check" data-size="18"></i></div><div>MediChain<small>QA Lab · Software Testing</small></div></div>
+      <a class="nav-item active" href="#runner"><i data-icon="play"></i> Live test runner</a>
+      <a class="nav-item" href="#faults"><i data-icon="bug"></i> Fault seeding</a>
+      <a class="nav-item" href="#e2e"><i data-icon="monitor"></i> Browser tests</a>
+      <a class="nav-item" href="#quality"><i data-icon="gauge"></i> Quality metrics</a>
+      <a class="nav-item" href="#trace"><i data-icon="link"></i> Traceability</a>
+      <a class="nav-item" href="#defects"><i data-icon="alert"></i> Defect log</a>
+      <div class="nav-label">About</div>
+      <div class="nav-note">The lab runs outside the system under test. It drives the real Vitest and Playwright suites and reads the reports they write.</div>
+      <div class="user-card"><div class="avatar lab-avatar"><i data-icon="flask" data-size="16"></i></div><div><div class="name">Test engineer</div><div class="role">localhost only</div></div></div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1>QA Lab</h1>
+        <span class="live" id="live"><span class="dot pulse"></span> Connected</span>
+        <span class="spacer"></span>
+        <span id="run-pill" class="badge">Idle</span>
+        <button class="btn sm danger hidden" id="stop"><i data-icon="stop" data-size="13"></i> Stop</button>
+      </div>
+
+      <div class="kpis" id="kpis">
+        <div class="card kpi"><div class="l">Automated tests</div><div class="v" id="k-tests">—</div><div class="s" id="k-tests-s">last full run</div></div>
+        <div class="card kpi"><div class="l">Line · branch coverage</div><div class="v" id="k-cov">—</div><div class="s">V8 coverage, target 80 · 70</div></div>
+        <div class="card kpi"><div class="l">Mutation score</div><div class="v" id="k-mut">—</div><div class="s" id="k-mut-s">Stryker</div></div>
+        <div class="card kpi"><div class="l">Seeded faults caught</div><div class="v" id="k-faults">—</div><div class="s" id="k-faults-s">run the fault campaign</div></div>
+        <div class="card kpi"><div class="l">Requirements verified</div><div class="v" id="k-req">—</div><div class="s">traced to passing tests</div></div>
+      </div>
+
+      <section class="card" id="runner">
+        <div class="card-head">
+          <h3><i data-icon="play"></i> Live test runner</h3>
+          <span class="sub">every test case appears as it finishes</span>
+          <span class="spacer"></span>
+          <div class="row wrap" id="suite-buttons"></div>
+        </div>
+        <div id="run-view"><div class="empty">Pick a suite to run. Each square below becomes one test case.</div></div>
+      </section>
+
+      <section class="card" id="faults">
+        <div class="card-head">
+          <h3><i data-icon="bug"></i> Fault seeding</h3>
+          <span class="sub">inject a real bug into a sandbox copy, then see which tests catch it</span>
+          <span class="spacer"></span>
+          <button class="btn sm primary" id="run-all-faults"><i data-icon="zap" data-size="13"></i> Run all seeded faults</button>
+        </div>
+        <div id="campaign"></div>
+        <div class="fault-grid" id="fault-grid"></div>
+      </section>
+
+      <section class="card" id="e2e">
+        <div class="card-head">
+          <h3><i data-icon="monitor"></i> Browser tests (Playwright)</h3>
+          <span class="sub">12 end-to-end tests against the real 11-process cluster</span>
+        </div>
+        <div class="e2e-body">
+          <p class="muted">Playwright starts its own MediChain cluster on ports offset by 1000, then a browser window (Microsoft Edge on Windows) signs in as doctors, patients and the admin. In slow motion the audience can follow every click. Results stream into the live runner above.</p>
+          <div class="row wrap">
+            <button class="btn primary" id="e2e-headed"><i data-icon="monitor" data-size="14"></i> Run in a visible browser</button>
+            <button class="btn" id="e2e-headless"><i data-icon="play" data-size="14"></i> Run headless</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="lab-grid" id="quality">
+        <section class="card">
+          <div class="card-head"><h3><i data-icon="layers"></i> Coverage by module</h3><span class="spacer"></span><span class="sub" id="cov-stamp"></span></div>
+          <div id="coverage" class="bars"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h3><i data-icon="target"></i> Mutation score</h3><span class="spacer"></span><span class="sub" id="mut-stamp"></span></div>
+          <div id="mutation" class="bars"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h3><i data-icon="list"></i> Test cases by design technique</h3><span class="spacer"></span><span class="sub" id="cat-stamp"></span></div>
+          <div id="techniques" class="bars"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h3><i data-icon="activity"></i> Performance (autocannon)</h3><span class="spacer"></span><span class="sub" id="load-stamp"></span></div>
+          <div id="load"></div>
+          <div class="card-head"><h3><i data-icon="file"></i> Generated reports</h3></div>
+          <div id="reports" class="report-links"></div>
+        </section>
+      </div>
+
+      <section class="card" id="trace">
+        <div class="card-head">
+          <h3><i data-icon="link"></i> Requirements traceability</h3>
+          <span class="sub">each requirement → the test cases that verify it → their latest result</span>
+        </div>
+        <div id="trace-table"></div>
+      </section>
+
+      <section class="card" id="defects">
+        <div class="card-head"><h3><i data-icon="alert"></i> Defect log</h3><span class="sub">found by testing, all fixed</span></div>
+        <div id="defect-table"></div>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="/lab.js"></script>
+</body>
+</html>

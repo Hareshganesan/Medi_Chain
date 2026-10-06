@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediChain — My Health</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='7' fill='%2314b8a6'/><path d='M12 6v12M6 12h12' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo"><i data-icon="logo" data-size="18"></i></div><div>MediChain<small>Patient</small></div></div>
+      <a class="nav-item active" href="#records"><i data-icon="file"></i> My records</a>
+      <a class="nav-item" href="#consent"><i data-icon="shield"></i> Who can see my data</a>
+      <a class="nav-item" href="#history"><i data-icon="clock"></i> Access history</a>
+      <div class="user-card" id="user-card"></div>
+      <button class="nav-item" id="logout"><i data-icon="logout"></i> Sign out</button>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1 id="greeting">My health</h1>
+        <span class="live" id="live"><span class="dot pulse"></span> Live alerts</span>
+      </div>
+
+      <div id="alerts"></div>
+
+      <div class="stack" style="gap:22px">
+        <section class="card" id="records">
+          <div class="phead" id="summary"><div class="muted">Loading your record…</div></div>
+          <div class="inspector" id="inspector"></div>
+          <div id="tabs" class="tabs"></div>
+          <div class="timeline" id="timeline"></div>
+        </section>
+
+        <div class="grid-2" style="align-items:start;gap:22px">
+          <section class="card" id="consent">
+            <div class="card-head"><h3><i data-icon="shield"></i> Who can see my data</h3><span class="spacer"></span><span class="sub">You are in control</span></div>
+            <div id="consent-list"></div>
+            <div class="card-pad row">
+              <select class="input" id="grant-doctor" aria-label="Doctor to grant access"></select>
+              <button class="btn primary" id="grant-btn">Grant access</button>
+            </div>
+          </section>
+
+          <section class="card" id="history">
+            <div class="card-head"><h3><i data-icon="clock"></i> Access history</h3><span class="spacer"></span><span id="ledger-badge"></span></div>
+            <div class="feed" id="history-list" style="max-height:520px"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/patient.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "name": "medichain-distributed-ehr",
+  "version": "1.0.0",
+  "description": "Secure & Performance-Optimized Distributed Healthcare Records System — Raft-replicated, sharded, event-driven EHR platform",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node src/supervisor/index.js",
+    "reset": "node scripts/reset-data.js",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:chaos": "vitest run tests/chaos",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:demo": "node scripts/e2e-demo.js",
+    "test:mutation": "stryker run",
+    "test:load": "node tests/perf/load-test.js",
+    "test:all": "npm run test:coverage && npm run test:e2e",
+    "docs:test-cases": "node scripts/test-catalogue.js",
+    "lab": "node qa-lab/server.js",
+    "test:lab": "vitest run --config qa-lab/vitest.config.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@stryker-mutator/core": "^10.0.0",
+    "@stryker-mutator/vitest-runner": "^10.0.0",
+    "@vitest/coverage-v8": "^3.2.7",
+    "@vitest/ui": "^3.2.7",
+    "autocannon": "^8.0.0",
+    "fast-check": "^4.10.2",
+    "supertest": "^7.3.1",
+    "vitest": "^3.2.7"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "qa-lab",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["qa-lab/server.js"],
+      "port": 9000
+    },
+    {
+      "name": "medichain",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["src/supervisor/index.js"],
+      "port": 8080
+    }
+  ]
+}

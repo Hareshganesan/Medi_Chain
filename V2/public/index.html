@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediChain — Sign in</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='7' fill='%2314b8a6'/><path d='M12 6v12M6 12h12' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <main class="login">
+    <section class="hero">
+      <div class="brand"><div class="logo"><i data-icon="logo" data-size="18"></i></div><div>MediChain<small>Distributed health records</small></div></div>
+      <h1>Health records that <span>outlast failure.</span></h1>
+      <p class="lead">Sharded across Raft clusters, encrypted field by field, and every access sealed in a tamper-evident ledger.</p>
+      <div class="pills">
+        <span class="badge">Raft consensus</span>
+        <span class="badge">AES-256-GCM</span>
+        <span class="badge">Hash-chained audit</span>
+        <span class="badge">Patient consent</span>
+      </div>
+      <div class="hero-panel" aria-hidden="true">
+        <svg viewBox="0 0 520 120" width="100%" height="118">
+          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#14b8a6"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+          <g stroke="url(#g)" stroke-width="1.6" fill="none">
+            <line class="heartbeat" x1="90" y1="60" x2="200" y2="25"/><line class="heartbeat" x1="90" y1="60" x2="200" y2="95"/>
+            <line class="heartbeat" x1="330" y1="60" x2="440" y2="25"/><line class="heartbeat" x1="330" y1="60" x2="440" y2="95"/>
+          </g>
+          <g font-family="Segoe UI, system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">
+            <circle cx="90" cy="60" r="19" fill="rgba(255,255,255,.75)" stroke="#f59e0b" stroke-width="2"/><text x="90" y="64" fill="#b45309">a1</text>
+            <circle cx="200" cy="25" r="14" fill="rgba(255,255,255,.6)" stroke="#14b8a6"/><text x="200" y="29" fill="#0f766e">a2</text>
+            <circle cx="200" cy="95" r="14" fill="rgba(255,255,255,.6)" stroke="#14b8a6"/><text x="200" y="99" fill="#0f766e">a3</text>
+            <circle cx="330" cy="60" r="19" fill="rgba(255,255,255,.75)" stroke="#f59e0b" stroke-width="2"/><text x="330" y="64" fill="#b45309">b1</text>
+            <circle cx="440" cy="25" r="14" fill="rgba(255,255,255,.6)" stroke="#6366f1"/><text x="440" y="29" fill="#4338ca">b2</text>
+            <circle cx="440" cy="95" r="14" fill="rgba(255,255,255,.6)" stroke="#6366f1"/><text x="440" y="99" fill="#4338ca">b3</text>
+          </g>
+        </svg>
+        <div class="muted" style="font-size:12px">Leaders stream heartbeats and log entries; a write commits once a majority stores it.</div>
+      </div>
+    </section>
+
+    <section class="login-pane">
+      <form class="login-card stack" id="login-form" novalidate style="gap:16px">
+        <div>
+          <h2>Sign in</h2>
+          <p class="muted" style="margin:4px 0 0">One account, one portal — clinicians, patients and operators.</p>
+        </div>
+        <div id="login-error" class="alert danger hidden" role="alert"></div>
+        <div class="field"><label for="username">Username</label><input class="input" id="username" name="username" autocomplete="username" required /></div>
+        <div class="field"><label for="password">Password</label><input class="input" id="password" name="password" type="password" autocomplete="current-password" required /></div>
+        <button class="btn primary block" id="login-btn" type="submit">Sign in securely</button>
+        <div>
+          <div class="muted" style="font-size:12px;font-weight:600">Demo accounts</div>
+          <div class="demo-accounts">
+            <button type="button" class="demo" data-u="dr.rohit" data-p="Doctor@123"><b>Dr. Rohit</b><span>Cardiologist</span></button>
+            <button type="button" class="demo" data-u="dr.varun" data-p="Doctor@123"><b>Dr. Varun</b><span>Emergency · break-glass</span></button>
+            <button type="button" class="demo" data-u="hemanth" data-p="Patient@123"><b>Hemanth</b><span>Patient portal</span></button>
+            <button type="button" class="demo" data-u="admin" data-p="Admin@123"><b>Sidharth</b><span>Ops console</span></button>
+          </div>
+        </div>
+        <p class="muted" style="font-size:11.5px;margin:0;display:flex;gap:6px;align-items:center"><i data-icon="lock" data-size="13"></i> RS256 tokens · bcrypt · lockout after 5 attempts</p>
+      </form>
+    </section>
+  </main>
+  <script type="module" src="/js/login.js"></script>
+</body>
+</html>

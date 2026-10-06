@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediChain — Clinician</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='7' fill='%2314b8a6'/><path d='M12 6v12M6 12h12' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo"><i data-icon="logo" data-size="18"></i></div><div>MediChain<small>Clinician</small></div></div>
+      <button class="nav-item active"><i data-icon="users"></i> Patients</button>
+      <button class="nav-item" id="nav-register"><i data-icon="user-plus"></i> Register patient</button>
+      <div class="user-card" id="user-card"></div>
+      <button class="nav-item" id="logout"><i data-icon="logout"></i> Sign out</button>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1>Patients</h1>
+        <span class="live" id="live"><span class="dot pulse"></span> Live</span>
+      </div>
+
+      <div class="split">
+        <section class="card">
+          <div class="search-wrap"><i data-icon="search"></i><input class="input" id="search" placeholder="Search name or ID" aria-label="Search patients" /></div>
+          <div class="dir-meta" id="dir-meta"></div>
+          <div id="degraded" class="banner danger hidden" style="margin:6px 14px"></div>
+          <div class="plist" id="plist"><div class="empty">Loading…</div></div>
+        </section>
+
+        <section class="card" id="detail">
+          <div class="locked">
+            <div class="big"><i data-icon="users" data-size="26"></i></div>
+            <h3>Select a patient</h3>
+            <div class="muted">Records load from the patient's home shard with linearizable reads.</div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/doctor.js"></script>
+</body>
+</html>

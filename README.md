@@ -73,10 +73,24 @@ See **[docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)**. The highlights:
 | `npm test` | Unit, integration, security and chaos tests (Vitest) — **269 tests** |
 | `npm run test:coverage` | Same, with V8 coverage (HTML in `reports/coverage`) |
 | `npm run test:e2e` | **12 browser E2E tests** (Playwright) against the real multi-process cluster |
+| `npm run test:e2e:demo` | The same browser tests in a visible, slowed-down Chromium window |
+| `npm run test:ui` | Vitest's own browser UI for exploring and re-running tests |
 | `npm run test:mutation` | Mutation testing (Stryker) of the core modules |
 | `npm run test:load` | Load / performance test (autocannon), writes `reports/load-test.md` |
+| `npm run lab` | **QA Lab** on http://127.0.0.1:9000 — the live testing demo console (below) |
+| `npm run test:lab` | 22 self-tests for the QA Lab tooling |
 
 First-time E2E setup: `npx playwright install chromium`.
+
+### QA Lab: the live testing demo
+
+`npm run lab` opens a console for demonstrating the testing work, separate from the system under test:
+
+- **Live test runner.** Runs the unit, integration, security, chaos or full suite and shows every test case as a square that turns green or red as it finishes.
+- **Fault seeding.** 14 realistic bugs (an off-by-one boundary, admin reading patient data, a reused AES-GCM nonce, Raft committing without a majority, plaintext phone numbers…). Each is injected into a sandbox copy of the code, never the real source, and only the relevant tests run. The lab shows which test cases caught it and their assertion messages. **14 of 14 are caught.**
+- **Browser tests.** Launches the 12 Playwright tests in a visible, slowed-down browser window (the installed Microsoft Edge on Windows), streaming results into the runner.
+- **Quality metrics.** Coverage by module, mutation score before and after hardening, test cases by design technique, load-test results and links to every HTML report.
+- **Traceability and defects.** Each requirement linked to its test cases and their latest result, and the defect log.
 
 **Results:** 281/281 passing · **98.4 % statement/line coverage** (89.0 % branch) ·
 **96.5 % mutation score** (up from 84.4 % after mutation-driven hardening) ·
